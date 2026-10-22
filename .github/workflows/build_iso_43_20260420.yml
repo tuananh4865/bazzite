@@ -40,6 +40,11 @@ jobs:
           ref: c310fc1a1127f707b8723d46fb8f0c48915d0583
           submodules: recursive
 
+      - name: Patch titanoboa_hook_postrootfs.sh to use local /src/branding
+        run: |
+          sed -i 's|git clone --depth 1 --quiet https://github.com/ublue-os/bazzite.git /root/packages|mkdir -p /root/packages/installer \&\& cp -r /src/branding /root/packages/installer/branding|g' installer/titanoboa_hook_postrootfs.sh
+          grep -n -C 5 "branding" installer/titanoboa_hook_postrootfs.sh
+
       - name: Build Container Image (bazzite-deck:stable-43.20260420)
         run: |
           BASE_IMAGE="ghcr.io/ublue-os/bazzite:stable-43.20260420"
